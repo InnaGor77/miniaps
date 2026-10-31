@@ -338,14 +338,6 @@ function openUrl(url) {
   }
 }
 
-// Посты канала (кейсы, «Полезное») открываем НЕ закрывая приложение:
-// Telegram сворачивает его в полоску внизу, и по ней можно вернуться обратно.
-// Закрывается приложение только когда человек идёт писать («Заказать», «Написать Инне»).
-function openPost(url) {
-  haptic();
-  if (!inTelegram) { window.open(url, "_blank"); return; }
-  tg.openTelegramLink(url);
-}
 
 function render() {
   const c = CONFIG;
@@ -408,7 +400,7 @@ function render() {
 
     ${has(c.cases) ? `
     <section id="cases">
-      <h2>Кейсы<small>Оформление целиком: обложка, меню, баннеры</small></h2>
+      <h2>Кейсы<small>Оформление целиком: обложка, меню, баннеры. Откроются в канале ↗</small></h2>
       <div class="cases">
         ${c.cases.map(k => `
           <div class="case" data-url="${esc(k.url)}">
@@ -433,7 +425,7 @@ function render() {
 
     ${has(c.useful) ? `
     <section id="useful">
-      <h2>Полезное</h2>
+      <h2>Полезное<small>Посты и подкасты откроются в канале ↗</small></h2>
       <div class="list">
         ${c.useful.map(p => `
           <div class="item" data-url="${esc(p.url)}">
@@ -459,12 +451,7 @@ function render() {
 function bindEvents() {
   document.addEventListener("click", e => {
     const link = e.target.closest("[data-url]");
-    if (link) {
-      e.stopPropagation();
-      if (link.dataset.url.startsWith(CH)) openPost(link.dataset.url);
-      else openUrl(link.dataset.url);
-      return;
-    }
+    if (link) { e.stopPropagation(); openUrl(link.dataset.url); return; }
 
     const go = e.target.closest("[data-go]");
     if (go) { haptic(); document.getElementById(go.dataset.go).scrollIntoView({ behavior: "smooth" }); return; }
