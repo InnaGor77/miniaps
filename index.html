@@ -12,7 +12,7 @@
   :root {
     /* Фирменные цвета — меняйте здесь */
     --bg: #071113;
-    --card: rgba(255, 255, 255, .045);
+    --card: rgba(14, 32, 35, .62);
     --line: rgba(110, 220, 205, .16);
     --text: #F1F6F5;
     --muted: #94ABA8;
@@ -21,6 +21,7 @@
     --grad: linear-gradient(100deg, #0F6E6C 0%, #1B4FB3 100%);   /* плашки как на карточках тарифов */
     --main-btn: #13807B;               /* цвет родной кнопки Telegram (только сплошной цвет) */
     --radius: 18px;
+    --gold: #E4C78F;                   /* золото-беж для иконок */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { background: var(--bg); }
@@ -30,29 +31,97 @@
     font-size: 14.5px; line-height: 1.5;
     padding: 0 16px calc(96px + env(safe-area-inset-bottom));
     max-width: 560px; margin: 0 auto; min-height: 100vh;
-    background:
-      radial-gradient(90% 50% at 0% 0%, rgba(20, 120, 95, .35), transparent 65%),
-      radial-gradient(80% 45% at 100% 35%, rgba(27, 79, 179, .22), transparent 65%),
-      radial-gradient(90% 40% at 0% 85%, rgba(20, 120, 95, .18), transparent 65%),
-      var(--bg);
   }
+  #app { position: relative; z-index: 1; }
   a { color: inherit; text-decoration: none; }
+
+  /* Фон: медленно плывущие сияния */
+  .bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .aurora { position: absolute; width: 110vmax; height: 110vmax; border-radius: 50%; will-change: transform; }
+  .a1 { top: -62vmax; left: -55vmax; background: radial-gradient(closest-side, rgba(20, 140, 112, .34), transparent); animation: drift1 24s ease-in-out infinite alternate; }
+  .a2 { top: 12vh; right: -68vmax; background: radial-gradient(closest-side, rgba(27, 79, 179, .26), transparent); animation: drift2 30s ease-in-out infinite alternate; }
+  .a3 { bottom: -72vmax; left: -40vmax; background: radial-gradient(closest-side, rgba(20, 140, 112, .2), transparent); animation: drift3 36s ease-in-out infinite alternate; }
+  @keyframes drift1 { to { transform: translate(22vw, 16vh) scale(1.12); } }
+  @keyframes drift2 { to { transform: translate(-20vw, 22vh) scale(.92); } }
+  @keyframes drift3 { to { transform: translate(18vw, -18vh) scale(1.08); } }
   button { font-family: inherit; }
   .serif { font-family: "Cormorant Garamond", Georgia, serif; }
 
   /* Шапка */
-  .hero { text-align: center; padding: 30px 4px 6px; }
-  .avatar {
-    width: 116px; height: 116px; border-radius: 50%; margin: 0 auto 14px; padding: 3px;
-    background: var(--grad);
+  .hero { text-align: center; padding-bottom: 6px; }
+  /* Шапка как обложка: слева имя, справа крупное фото с телефоном, рядом всплывают сообщения */
+  .stage { position: relative; height: 410px; margin: 0 -16px; overflow: hidden; text-align: left; }
+  /* Фото + ореол за спиной + волны от телефона. Размер 480×626 — пропорции portrait.webp */
+  .figure-wrap { position: absolute; right: -18px; bottom: 0; z-index: 1; height: 372px; aspect-ratio: 480 / 626; }
+  .figure {
+    position: relative; z-index: 1; display: block; height: 100%;
+    -webkit-mask-image: linear-gradient(180deg, #000 80%, transparent); mask-image: linear-gradient(180deg, #000 80%, transparent);
   }
-  .avatar-in {
-    width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: #0C1B1E;
-    display: grid; place-items: center; color: var(--accent); font-size: 34px; font-weight: 700;
-    border: 3px solid var(--bg);
+  .figure img { display: block; height: 100%; width: auto; }
+  .halo { position: absolute; left: 50%; top: 40%; width: 330px; height: 330px; transform: translate(-50%, -50%); pointer-events: none; }
+  .halo::before {
+    content: ""; position: absolute; inset: 0; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(95, 220, 203, .42), rgba(27, 79, 179, .2) 58%, transparent);
+    animation: breathe 6s ease-in-out infinite;
   }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .name { font-family: "Cormorant Garamond", Georgia, serif; font-size: 36px; font-weight: 700; line-height: 1.05; }
+  /* Тонкое кольцо с бирюзовым и золотым бликом — медленно вращается */
+  .ring {
+    position: absolute; inset: 22px; border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0 8%, var(--accent) 22%, transparent 38%, transparent 55%, var(--gold) 72%, transparent 88%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    filter: drop-shadow(0 0 6px rgba(95, 220, 203, .8));
+    animation: spin 16s linear infinite;
+  }
+  .orbit { position: absolute; inset: 58px; border-radius: 50%; border: 1px dashed rgba(228, 199, 143, .28); animation: spin 50s linear infinite reverse; }
+  .orbit::after { content: ""; position: absolute; top: -4px; left: 50%; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes breathe { 0%, 100% { opacity: .85; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+  /* Волны от телефона, как сигнал о новом сообщении */
+  .ripple { position: absolute; left: 37%; top: 68%; z-index: 2; pointer-events: none; }
+  .ripple i {
+    position: absolute; left: 0; top: 0; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
+    border: 1.5px solid rgba(95, 220, 203, .7); box-shadow: 0 0 12px rgba(95, 220, 203, .4);
+    opacity: 0; animation: ripple 3.6s ease-out infinite;
+  }
+  .ripple i:nth-child(2) { animation-delay: 1.2s; }
+  .ripple i:nth-child(3) { animation-delay: 2.4s; }
+  @keyframes ripple { 0% { transform: scale(.25); opacity: .9; } 100% { transform: scale(1); opacity: 0; } }
+  .title { position: absolute; left: 16px; top: 34px; z-index: 2; }
+  .kicker { font-size: 10.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+  .roles { list-style: none; margin-top: 12px; font-size: 12.5px; line-height: 1.6; color: #C3D2D0; }
+  .roles li::before { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); margin: 0 8px 2px 0; }
+  /* Всплывающие сообщения от клиентов */
+  .msg { position: absolute; z-index: 3; animation: float 6s ease-in-out infinite; }
+  .msg-in {
+    display: flex; gap: 8px; align-items: center; max-width: 188px; padding: 8px 12px 8px 8px;
+    border-radius: 16px 16px 16px 5px; font-size: 12.5px; line-height: 1.3;
+    background: rgba(14, 36, 40, .78); border: 1px solid rgba(95, 220, 203, .3);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .45), 0 0 18px rgba(95, 220, 203, .12);
+    opacity: 0; animation: flyin 1s cubic-bezier(.2, .8, .2, 1) forwards;
+  }
+  .msg small { display: block; font-size: 10.5px; color: var(--muted); }
+  .msg .ava { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 11.5px; font-weight: 700; background: var(--grad); }
+  .msg .ava.gold { background: linear-gradient(135deg, #F1D9A6, #B8904F); color: #2A1E08; }
+  .m1 { left: 16px; top: 238px; }
+  .m1 .msg-in { animation-delay: .6s; }
+  .m2 { left: 30px; top: 306px; animation-delay: -3s; }
+  .m2 .msg-in { animation-delay: 1.8s; }
+  /* Сообщение прилетает слева, чуть разворачивается и «пружинит» на месте */
+  @keyframes flyin {
+    0% { opacity: 0; transform: translate(-160px, 46px) rotate(-12deg) scale(.7); filter: blur(5px); }
+    55% { opacity: 1; transform: translate(10px, -5px) rotate(2deg) scale(1.04); filter: blur(0); }
+    78% { transform: translate(-3px, 1px) rotate(-.6deg) scale(.99); }
+    100% { opacity: 1; transform: none; filter: none; }
+  }
+  /* Когда сообщение долетело — аватар коротко вспыхивает */
+  .msg .ava { animation: ping 1s ease-out backwards; }
+  .m1 .ava { animation-delay: 1.15s; }
+  .m2 .ava { animation-delay: 2.35s; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(95, 220, 203, .8); } 100% { box-shadow: 0 0 0 12px rgba(95, 220, 203, 0); } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  .name { font-family: "Cormorant Garamond", Georgia, serif; font-size: 46px; font-weight: 700; line-height: .95; margin-top: 8px; text-shadow: 0 2px 18px rgba(0, 0, 0, .55); }
   .plaque {
     display: inline-block; margin-top: 12px; padding: 10px 16px; border-radius: 14px;
     background: var(--grad); font-size: 14.5px; font-weight: 500; line-height: 1.4;
@@ -98,6 +167,14 @@
   .service.open { border-color: rgba(95, 220, 203, .4); }
   .service-top { display: flex; gap: 12px; align-items: flex-start; }
   .service-emoji { flex: none; width: 42px; height: 42px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; font-size: 20px; }
+  /* Золотые линейные иконки в стеклянной плашке */
+  .ic {
+    color: var(--gold);
+    background: linear-gradient(145deg, rgba(228, 199, 143, .16), rgba(228, 199, 143, .03));
+    border: 1px solid rgba(228, 199, 143, .32);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 0 16px rgba(228, 199, 143, .1);
+  }
+  .ic svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 5px rgba(228, 199, 143, .55)); }
   .service-main { flex: 1; min-width: 0; }
   .service-title { font-weight: 700; font-size: 15.5px; line-height: 1.3; }
   .service-short { color: var(--muted); font-size: 13.5px; margin-top: 3px; }
@@ -125,12 +202,29 @@
   .btn:active { opacity: .85; }
   .btn.ghost { background: var(--accent-soft); color: var(--accent); }
 
-  /* Кейсы */
-  .cases { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .case { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; cursor: pointer; }
-  .case:active { background: var(--accent-soft); }
-  .case-name { font-weight: 700; font-size: 14px; }
-  .case-niche { color: var(--muted); font-size: 12.5px; }
+  /* Кейсы — змейка по 3 в ряд, соединённая светящейся линией */
+  .snake { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 24px; padding: 4px 18px; }
+  .snake svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; filter: drop-shadow(0 0 5px rgba(95, 220, 203, .9)); }
+  .snake .track { fill: none; stroke: rgba(95, 220, 203, .45); stroke-width: 2.4; }
+  .snake .flow { fill: none; stroke: #BFFFF5; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 3 11; animation: flow 1.2s linear infinite; }
+  .snake .spark { fill: #E9FFFB; }
+  @keyframes flow { to { stroke-dashoffset: -14; } }
+  .case {
+    position: relative; z-index: 1; cursor: pointer; text-align: center; min-width: 0;
+    background: #0D2023; border: 1px solid var(--line); border-radius: 14px; padding: 9px 6px 10px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .3);
+  }
+  .case:active { background: #123033; }
+  .case-num { font-family: "Cormorant Garamond", Georgia, serif; font-size: 15px; font-weight: 700; color: var(--gold); line-height: 1; }
+  .case-name { font-weight: 700; font-size: 13px; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .case-niche { color: var(--muted); font-size: 11px; line-height: 1.3; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aurora, .msg, .msg .ava, .snake .flow, .halo::before, .ring, .orbit { animation: none; }
+    .ripple { display: none; }
+    .msg-in { animation: none; opacity: 1; }
+    .snake .spark { display: none; }
+  }
 
   /* Список ссылок */
   .list { background: var(--card); border-radius: var(--radius); border: 1px solid var(--line); overflow: hidden; }
@@ -138,6 +232,8 @@
   .item:last-child { border-bottom: 0; }
   .item:active { background: var(--accent-soft); }
   .item-emoji { flex: none; font-size: 19px; width: 26px; text-align: center; }
+  .item-emoji.ic { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; }
+  .item-emoji.ic svg { width: 18px; height: 18px; }
   .item-main { flex: 1; min-width: 0; }
   .item-title { font-weight: 600; font-size: 14px; }
   .item-desc { color: var(--muted); font-size: 12.5px; }
@@ -167,6 +263,9 @@
 </head>
 <body>
 
+<div class="bg" aria-hidden="true">
+  <div class="aurora a1"></div><div class="aurora a2"></div><div class="aurora a3"></div>
+</div>
 <div id="app"></div>
 
 <script>
@@ -180,7 +279,16 @@ const ME = "https://t.me/innagorulko";
 const CONFIG = {
   name: "Инна Горулько",
   initials: "ИГ",
-  photo: "photo.jpg", // фото лежит рядом с index.html; если файла нет — будут инициалы
+  // Фото без фона лежит рядом с index.html (webp + png на случай старых телефонов)
+  photo: "portrait.webp",
+  photoFallback: "portrait.png",
+  kicker: "Продвижение ВКонтакте",
+  roles: ["оформление сообществ", "чат-боты", "таргетированная реклама"],
+  // Сообщения, которые всплывают рядом с фото
+  messages: [
+    { ava: "А", from: "Анна", text: "Здравствуйте! Хочу записаться 🙌" },
+    { ava: "+1", from: "из сообщества ВК", text: "Новая заявка", gold: true },
+  ],
   headline: "Помогаю, чтобы вам писали, а не вы бегали за клиентами",
   // Текст под шапкой. Слова в <b>…</b> выделяются бирюзовым
   about: "<b>Оформлю сообщество</b> так, чтобы человек не потерялся, сразу увидел ваши услуги и нажал «Написать». Если сомневается — <b>чат-бот</b> ответит на вопросы и доведёт до заявки. А <b>таргет</b> приведёт новых людей, чтобы заявок стало больше.",
@@ -209,7 +317,7 @@ const CONFIG = {
   // fit — «Подойдёт, если…»; post — пост в канале для кнопки «Подробнее»
   services: [
     {
-      emoji: "🎨",
+      icon: "palette",
       title: "Визуал для сообщества ВК",
       short: "Аккуратный и понятный визуал для вашего сообщества",
       price: "3 000 ₽",
@@ -219,7 +327,7 @@ const CONFIG = {
       post: CH + "16",
     },
     {
-      emoji: "📦",
+      icon: "layers",
       title: "Полная упаковка сообщества ВК",
       short: "Не только визуал, но и структура сообщества",
       price: "4 500 ₽",
@@ -229,7 +337,7 @@ const CONFIG = {
       post: CH + "17",
     },
     {
-      emoji: "🔑",
+      icon: "key",
       title: "Сообщество ВКонтакте под ключ",
       short: "Оформление, навигация и чат-бот",
       price: "7 000 ₽",
@@ -239,7 +347,7 @@ const CONFIG = {
       post: CH + "22",
     },
     {
-      emoji: "🤖",
+      icon: "bot",
       title: "Чат-бот для сообщества ВК",
       short: "Автоматически отвечает клиентам и помогает принимать заявки",
       price: "от 7 000 ₽",
@@ -250,7 +358,7 @@ const CONFIG = {
       post: CH + "28",
     },
     {
-      emoji: "🎯",
+      icon: "target",
       title: "Таргет ВКонтакте",
       short: "Настраиваю рекламу, которая приводит целевых клиентов",
       price: "от 2 500 ₽",
@@ -265,7 +373,7 @@ const CONFIG = {
       post: CH + "59",
     },
     {
-      emoji: "✨",
+      icon: "sparkle",
       title: "Готовый визуал для ВК",
       short: "Светлый или тёмно-синий, с вашим фото и именем",
       price: "2 500 ₽",
@@ -274,7 +382,7 @@ const CONFIG = {
       post: CH + "86",
     },
     {
-      emoji: "🗂",
+      icon: "layout",
       title: "Макеты и дизайн",
       short: "Карточки тарифов для бота, баннеры и другое",
       price: "",
@@ -304,12 +412,12 @@ const CONFIG = {
   ],
 
   useful: [
-    { emoji: "👋", title: "Знакомство", desc: "Кто я и как работаю", url: CH + "4" },
-    { emoji: "🎓", title: "Моё обучение", desc: "Сертификаты", url: CH + "6" },
-    { emoji: "🎬", title: "Визуал или упаковка — в чём разница", desc: "Видео", url: CH + "84" },
-    { emoji: "🎙", title: "Почему бизнесу стоит переходить в ВК", desc: "Подкаст", url: CH + "15" },
-    { emoji: "🎙", title: "Чат-боты: как вести клиента к покупке", desc: "Подкаст", url: CH + "27" },
-    { emoji: "📌", title: "Как понять, что чат-бот сливает заявки", desc: "Разбор", url: CH + "67" },
+    { icon: "user", title: "Знакомство", desc: "Кто я и как работаю", url: CH + "4" },
+    { icon: "cap", title: "Моё обучение", desc: "Сертификаты", url: CH + "6" },
+    { icon: "play", title: "Визуал или упаковка — в чём разница", desc: "Видео", url: CH + "84" },
+    { icon: "mic", title: "Почему бизнесу стоит переходить в ВК", desc: "Подкаст", url: CH + "15" },
+    { icon: "mic", title: "Чат-боты: как вести клиента к покупке", desc: "Подкаст", url: CH + "27" },
+    { icon: "search", title: "Как понять, что чат-бот сливает заявки", desc: "Разбор", url: CH + "67" },
   ],
 };
 
@@ -345,8 +453,24 @@ function render() {
 
   document.getElementById("app").innerHTML = `
     <header class="hero">
-      <div class="avatar"><div class="avatar-in">${c.photo ? `<img src="${esc(c.photo)}" alt="" onerror="this.parentNode.textContent='${esc(c.initials)}'">` : esc(c.initials)}</div></div>
-      <h1 class="name">${esc(c.name)}</h1>
+      <div class="stage">
+        ${c.photo ? `
+        <div class="figure-wrap">
+          <div class="halo" aria-hidden="true"><div class="ring"></div><div class="orbit"></div></div>
+          <picture class="figure"><source srcset="${esc(c.photo)}" type="image/webp"><img src="${esc(c.photoFallback || c.photo)}" alt="${esc(c.name)}"></picture>
+          <div class="ripple" aria-hidden="true"><i></i><i></i><i></i></div>
+        </div>` : ""}
+        <div class="title">
+          ${c.kicker ? `<div class="kicker">${esc(c.kicker)}</div>` : ""}
+          <h1 class="name">${c.name.split(" ").map(esc).join("<br>")}</h1>
+          ${has(c.roles) ? `<ul class="roles">${c.roles.map(r => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}
+        </div>
+        ${(c.messages || []).map((m, i) => `
+          <div class="msg m${i + 1}" aria-hidden="true"><div class="msg-in">
+            <span class="ava${m.gold ? " gold" : ""}">${esc(m.ava)}</span>
+            <span><small>${esc(m.from)}</small>${esc(m.text)}</span>
+          </div></div>`).join("")}
+      </div>
       <div class="plaque">${esc(c.headline)}</div>
       ${c.about ? `<p class="about">${c.about}</p>` : ""}
     </header>
@@ -362,7 +486,7 @@ function render() {
     ${c.gift ? `
     <section id="gift">
       <div class="gift">
-        <div class="label">🔍 Бесплатно</div>
+        <div class="label">Бесплатно</div>
         <h3>${esc(c.gift.title)}</h3>
         <p>${esc(c.gift.text)}</p>
         <ul>${c.gift.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
@@ -376,7 +500,7 @@ function render() {
       ${c.services.map((s, i) => `
         <div class="service" data-service="${i}">
           <div class="service-top">
-            <div class="service-emoji">${esc(s.emoji)}</div>
+            <div class="service-emoji${s.icon ? " ic" : ""}">${s.icon ? icon(s.icon) : esc(s.emoji)}</div>
             <div class="service-main">
               <div class="service-title">${esc(s.title)}</div>
               <div class="service-short">${esc(s.short)}</div>
@@ -401,12 +525,27 @@ function render() {
     ${has(c.cases) ? `
     <section id="cases">
       <h2>Кейсы<small>Оформление целиком: обложка, меню, баннеры. Откроются в канале ↗</small></h2>
-      <div class="cases">
-        ${c.cases.map(k => `
-          <div class="case" data-url="${esc(k.url)}">
+      <div class="snake">
+        <svg aria-hidden="true">
+          <path class="track main" id="snakePath"/><path class="flow main"/>
+          <circle class="spark" r="3.2"><animateMotion dur="9s" repeatCount="indefinite"><mpath href="#snakePath"/></animateMotion></circle>
+          <circle class="spark" r="2.3"><animateMotion dur="9s" begin="-4.5s" repeatCount="indefinite"><mpath href="#snakePath"/></animateMotion></circle>
+          ${loneCase(c.cases) ? `
+          <path class="track branch" id="branchPath"/><path class="flow branch"/>
+          <circle class="spark" r="2.5"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#branchPath"/></animateMotion></circle>` : ""}
+        </svg>
+        ${c.cases.map((k, i) => {
+          // Змейка: нечётные ряды идут слева направо, чётные — справа налево.
+          // Если последний кейс один в ряду — он встаёт по центру
+          const row = Math.floor(i / 3), pos = i % 3;
+          const col = loneCase(c.cases) && i === c.cases.length - 1 ? 2 : row % 2 ? 3 - pos : pos + 1;
+          return `
+          <div class="case" style="grid-row:${row + 1};grid-column:${col}" data-url="${esc(k.url)}">
+            <div class="case-num">${String(i + 1).padStart(2, "0")}</div>
             <div class="case-name">${esc(k.name)}</div>
             <div class="case-niche">${esc(k.niche)}</div>
-          </div>`).join("")}
+          </div>`;
+        }).join("")}
       </div>
     </section>` : ""}
 
@@ -429,7 +568,7 @@ function render() {
       <div class="list">
         ${c.useful.map(p => `
           <div class="item" data-url="${esc(p.url)}">
-            <div class="item-emoji">${esc(p.emoji)}</div>
+            <div class="item-emoji${p.icon ? " ic" : ""}">${p.icon ? icon(p.icon) : esc(p.emoji)}</div>
             <div class="item-main">
               <div class="item-title">${esc(p.title)}</div>
               <div class="item-desc">${esc(p.desc)}</div>
@@ -446,6 +585,57 @@ function render() {
 
     <div class="sticky-cta"><button class="btn" data-url="${esc(c.bookingUrl)}">${esc(c.bookingLabel)}</button></div>
   `;
+}
+
+// Золотые иконки (тонкие линии, рисуются цветом var(--gold))
+const ICONS = {
+  palette: '<path d="M12 3a9 9 0 1 0 0 18c1 0 1.6-.7 1.6-1.6 0-.4-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-4.1-4-7.6-9-7.6z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14.5" cy="7" r="1"/><circle cx="17" cy="10.5" r="1"/>',
+  layers: '<path d="M12 3 3 7.5l9 4.5 9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/>',
+  key: '<circle cx="8" cy="15" r="4.5"/><path d="M11.2 11.8 20 3"/><path d="m16.5 6.5 3 3"/><path d="m14 9 2 2"/>',
+  bot: '<rect x="4" y="8" width="16" height="11" rx="3.5"/><path d="M12 5v3"/><circle cx="12" cy="4" r="1"/><circle cx="9" cy="13.5" r="1.2"/><circle cx="15" cy="13.5" r="1.2"/><path d="M2 12.5v2.5M22 12.5v2.5"/>',
+  target: '<circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4"/><path d="M11 13 19.5 4.5"/><path d="M16.5 4.5h3v3"/>',
+  sparkle: '<path d="M11 3.5l1.8 5.2 5.2 1.8-5.2 1.8L11 17.5l-1.8-5.2L4 10.5l5.2-1.8z"/><path d="M18.5 15l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/>',
+  layout: '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.4-3.8 4.2-5.7 7.5-5.7s6.1 1.9 7.5 5.7"/>',
+  cap: '<path d="M2 9.5 12 4.5l10 5-10 5z"/><path d="M6 11.5v4.5c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.5"/><path d="M22 9.5v5.5"/>',
+  play: '<rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10 9.3v5.4l4.6-2.7z"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21M9 21h6"/>',
+  search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/><path d="M8 10.5h5M10.5 8v5"/>',
+};
+function icon(name) {
+  return `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ""}</svg>`;
+}
+
+// Последний кейс стоит один в ряду (например, 10-й при трёх в ряд)
+function loneCase(cases) {
+  return cases.length > 3 && cases.length % 3 === 1;
+}
+
+// Линия змейки кейсов: прямо между карточками в ряду, полукругом на поворотах.
+// Одинокий последний кейс подключается отдельной линией от карточки над ним
+function drawSnake() {
+  const snake = document.querySelector(".snake");
+  if (!snake) return;
+  const box = snake.getBoundingClientRect();
+  const cards = [...snake.querySelectorAll(".case")].map(el => {
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top, half: r.width / 2 };
+  });
+  if (cards.length < 2) return;
+  const lone = loneCase(cards), main = lone ? cards.slice(0, -1) : cards;
+  let d = `M${main[0].x} ${main[0].y}`;
+  for (let i = 1; i < main.length; i++) {
+    const a = main[i - 1], b = main[i];
+    if (i % 3) { d += ` L${b.x} ${b.y}`; continue; }
+    // Поворот на следующий ряд: дуга снаружи карточек
+    const side = a.x > box.width / 2 ? 1 : -1, out = a.x + side * (a.half + 16);
+    d += ` C${out} ${a.y} ${out} ${b.y} ${b.x} ${b.y}`;
+  }
+  snake.querySelectorAll("path.main").forEach(p => p.setAttribute("d", d));
+  if (lone) {
+    const above = cards[cards.length - 3], last = cards[cards.length - 1];
+    snake.querySelectorAll("path.branch").forEach(p => p.setAttribute("d", `M${above.x} ${above.y} L${last.x} ${last.y}`));
+  }
 }
 
 function bindEvents() {
@@ -484,6 +674,9 @@ function initTelegram() {
 render();
 bindEvents();
 initTelegram();
+drawSnake();
+addEventListener("resize", drawSnake);
+if (document.fonts) document.fonts.ready.then(drawSnake);
 </script>
 </body>
 </html>
