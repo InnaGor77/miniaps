@@ -161,31 +161,13 @@
   .sticky-cta .btn { max-width: 528px; margin: 0 auto; box-shadow: 0 8px 24px rgba(15, 110, 108, .4); }
   .in-tg .sticky-cta { display: none; }
 
-  /* Просмотр поста внутри приложения */
-  .viewer { position: fixed; inset: 0; z-index: 20; background: var(--bg); display: none; flex-direction: column; }
-  .viewer.show { display: flex; }
-  .viewer-bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
-  .viewer-back { flex: none; border: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 20px; line-height: 1; cursor: pointer; }
-  .in-tg .viewer-back { display: none; } /* в Telegram — родная кнопка «Назад» в шапке */
-  .viewer-title { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .viewer-body { flex: 1; position: relative; }
-  .viewer-body iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; transition: opacity .2s; }
-  .viewer-loading { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--muted); font-size: 14px; }
-  .viewer-foot { padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
+  /* Карточка тарифа (картинка) внутри раскрытого тарифа */
+  .service-img { display: block; width: 100%; border-radius: 14px; margin-bottom: 14px; background: #0C1B1E; aspect-ratio: 1 / 1; object-fit: cover; }
 </style>
 </head>
 <body>
 
 <div id="app"></div>
-
-<div class="viewer" id="viewer">
-  <div class="viewer-bar">
-    <button class="viewer-back" data-close aria-label="Назад">‹</button>
-    <div class="viewer-title"></div>
-  </div>
-  <div class="viewer-body"></div>
-  <div class="viewer-foot"><button class="btn ghost" data-ext="">Открыть в канале</button></div>
-</div>
 
 <script>
 /* =====================================================================
@@ -233,6 +215,7 @@ const CONFIG = {
       price: "3 000 ₽",
       details: ["обложка для ПК", "обложка для мобильной версии", "аватар сообщества", "оформление меню (до 5 кнопок)", "оформление виджетов"],
       fit: "у вас уже есть сообщество, но хочется сделать аккуратный и понятный визуал",
+      image: "cards/visual.jpg",
       post: CH + "16",
     },
     {
@@ -242,6 +225,7 @@ const CONFIG = {
       price: "4 500 ₽",
       details: ["всё из пакета «Визуал для сообщества ВК»", "настройка меню", "настройка переходов", "подключение виджетов", "логика навигации по сообществу"],
       fit: "вы хотите привести сообщество в порядок и настроить удобную навигацию для клиентов",
+      image: "cards/upakovka.jpg",
       post: CH + "17",
     },
     {
@@ -251,6 +235,7 @@ const CONFIG = {
       price: "7 000 ₽",
       details: ["оформление сообщества (обложка, аватар, меню, виджеты)", "настройка структуры и навигации", "чат-бот для ответов клиентам"],
       fit: "вы хотите полностью готовое сообщество с оформлением, навигацией и автоматическими ответами клиентам",
+      image: "cards/pod-klyuch.jpg",
       post: CH + "22",
     },
     {
@@ -261,6 +246,7 @@ const CONFIG = {
       note: "Стоимость: <b>7 000 – 10 000 ₽</b>",
       details: ["разработка логики общения", "приветственное сообщение и согласие на рассылку", "автоматические ответы на частые вопросы", "несколько сценариев общения (ветки сообщений)", "воронка сообщений с информацией о ваших услугах", "сбор заявок и догрев клиентов"],
       fit: "вы хотите автоматизировать ответы клиентам и доводить их до заявки без постоянного ручного общения",
+      image: "cards/chat-bot.jpg",
       post: CH + "28",
     },
     {
@@ -275,6 +261,7 @@ const CONFIG = {
       ],
       details: ["настройка рекламных кампаний", "подбор аудитории", "анализ и оптимизация", "отчёт по результатам"],
       fit: "хотите стабильно получать новых клиентов и масштабировать свой бизнес",
+      image: "cards/target.jpg",
       post: CH + "59",
     },
     {
@@ -351,43 +338,13 @@ function openUrl(url) {
   }
 }
 
-// Посты канала открываем внутри приложения, чтобы можно было вернуться назад.
-// Приложение закрывается только когда человек идёт писать («Заказать», «Написать Инне»).
-let viewerTimer;
-
-function openPost(url, title) {
+// Посты канала (кейсы, «Полезное») открываем НЕ закрывая приложение:
+// Telegram сворачивает его в полоску внизу, и по ней можно вернуться обратно.
+// Закрывается приложение только когда человек идёт писать («Заказать», «Написать Инне»).
+function openPost(url) {
   haptic();
-  const v = document.getElementById("viewer");
-  const body = v.querySelector(".viewer-body");
-  v.querySelector(".viewer-title").textContent = title || "Пост из канала";
-  v.querySelector("[data-ext]").dataset.ext = url;
-  body.innerHTML = `<div class="viewer-loading">Загружаю пост…</div>`;
-
-  const frame = document.createElement("iframe");
-  frame.style.opacity = 0;
-  frame.onload = () => {
-    clearTimeout(viewerTimer);
-    frame.style.opacity = 1;
-  };
-  frame.src = url + "?embed=1&dark=1";
-  body.appendChild(frame);
-  viewerTimer = setTimeout(() => {
-    const l = body.querySelector(".viewer-loading");
-    if (l && frame.style.opacity === "0") l.textContent = "Пост долго загружается. Откройте его в канале — кнопка внизу.";
-  }, 8000);
-
-  v.classList.add("show");
-  document.body.style.overflow = "hidden";
-  if (inTelegram) tg.BackButton.show();
-}
-
-function closePost() {
-  clearTimeout(viewerTimer);
-  const v = document.getElementById("viewer");
-  v.classList.remove("show");
-  v.querySelector(".viewer-body").innerHTML = "";
-  document.body.style.overflow = "";
-  if (inTelegram) tg.BackButton.hide();
+  if (!inTelegram) { window.open(url, "_blank"); return; }
+  tg.openTelegramLink(url);
 }
 
 function render() {
@@ -435,13 +392,14 @@ function render() {
             <div class="service-price${s.price ? "" : " ask"}">${s.price ? esc(s.price) : "по запросу"}</div>
           </div>
           <div class="service-more">
+            ${s.image ? `<img class="service-img" src="${esc(s.image)}" alt="${esc(s.title)}" loading="lazy">` : ""}
             ${has(s.options) ? `<div class="more-label">Варианты</div><div class="opts">${s.options.map(o => `<div class="opt"><span>${esc(o.label)}</span><b>${esc(o.price)}</b></div>`).join("")}</div>` : ""}
             ${s.note ? `<div class="note">${s.note}</div>` : ""}
             <div class="more-label">Что входит</div>
             <ul>${(s.details || []).map(d => `<li>${esc(d)}</li>`).join("")}</ul>
             ${s.fit ? `<div class="fit">Подойдёт, если ${esc(s.fit)}</div>` : ""}
             <div class="row">
-              ${s.post ? `<button class="btn ghost" data-url="${esc(s.post)}" data-title="${esc(s.title)}">Подробнее</button>` : ""}
+              ${s.post && !s.image ? `<button class="btn ghost" data-url="${esc(s.post)}">Подробнее</button>` : ""}
               <button class="btn" data-url="${esc(c.bookingUrl)}">${s.price ? "Заказать" : "Узнать цену"}</button>
             </div>
           </div>
@@ -453,7 +411,7 @@ function render() {
       <h2>Кейсы<small>Оформление целиком: обложка, меню, баннеры</small></h2>
       <div class="cases">
         ${c.cases.map(k => `
-          <div class="case" data-url="${esc(k.url)}" data-title="Кейс: ${esc(k.name)}, ${esc(k.niche)}">
+          <div class="case" data-url="${esc(k.url)}">
             <div class="case-name">${esc(k.name)}</div>
             <div class="case-niche">${esc(k.niche)}</div>
           </div>`).join("")}
@@ -478,7 +436,7 @@ function render() {
       <h2>Полезное</h2>
       <div class="list">
         ${c.useful.map(p => `
-          <div class="item" data-url="${esc(p.url)}" data-title="${esc(p.title)}">
+          <div class="item" data-url="${esc(p.url)}">
             <div class="item-emoji">${esc(p.emoji)}</div>
             <div class="item-main">
               <div class="item-title">${esc(p.title)}</div>
@@ -500,15 +458,10 @@ function render() {
 
 function bindEvents() {
   document.addEventListener("click", e => {
-    if (e.target.closest("[data-close]")) { closePost(); return; }
-
-    const ext = e.target.closest("[data-ext]");
-    if (ext) { openUrl(ext.dataset.ext); return; }
-
     const link = e.target.closest("[data-url]");
     if (link) {
       e.stopPropagation();
-      if (link.dataset.url.startsWith(CH)) openPost(link.dataset.url, link.dataset.title);
+      if (link.dataset.url.startsWith(CH)) openPost(link.dataset.url);
       else openUrl(link.dataset.url);
       return;
     }
@@ -530,9 +483,6 @@ function initTelegram() {
   const bg = css.getPropertyValue("--bg").trim();
   tg.setHeaderColor(bg);
   tg.setBackgroundColor(bg);
-
-  // Родная кнопка «Назад» в шапке — закрывает открытый пост
-  tg.BackButton.onClick(closePost);
 
   // Родная кнопка Telegram внизу экрана
   tg.MainButton.setParams({
