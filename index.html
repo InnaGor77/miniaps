@@ -325,15 +325,13 @@ function haptic() {
   if (inTelegram && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light");
 }
 
-// Ссылки на Telegram. Свежий Telegram (с версии 8.0) сам сворачивает приложение в полоску внизу,
-// и в него можно вернуться одним нажатием. В старом приложение оставалось поверх поста на iPhone,
-// поэтому там сначала закрываем его, сразу после открываем ссылку.
+// Ссылки на Telegram: сначала закрываем приложение, сразу после — открываем ссылку.
+// Если открыть ссылку первой, на iPhone приложение остаётся поверх.
 function openUrl(url) {
   haptic();
   if (!inTelegram) { window.open(url, "_blank"); return; }
   if (url.startsWith("https://t.me/")) {
-    const canMinimize = tg.isVersionAtLeast && tg.isVersionAtLeast("8.0");
-    if (!canMinimize) tg.close();
+    tg.close();
     tg.openTelegramLink(url);
   } else {
     tg.openLink(url);
