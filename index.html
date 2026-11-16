@@ -7,7 +7,7 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
 <style>
   :root {
     /* Фирменные цвета — меняйте здесь */
@@ -21,13 +21,13 @@
     --grad: linear-gradient(100deg, #0F6E6C 0%, #1B4FB3 100%);   /* плашки как на карточках тарифов */
     --main-btn: #13807B;               /* цвет родной кнопки Telegram (только сплошной цвет) */
     --radius: 18px;
-    --gold: #E4C78F;                   /* золото-беж для иконок */
+    --gold: #D6B266;                   /* золото-беж для иконок */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { background: var(--bg); }
   body {
     color: var(--text);
-    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: 14.5px; line-height: 1.5;
     padding: 0 16px calc(96px + env(safe-area-inset-bottom));
     max-width: 560px; margin: 0 auto; min-height: 100vh;
@@ -130,6 +130,52 @@
   .about { margin-top: 16px; color: #C3D2D0; font-size: 14.5px; line-height: 1.6; }
   .about b { color: var(--accent); font-weight: 600; white-space: nowrap; }
 
+
+  /* ===== Новая шапка (образец 16.11.2026): УТП крупно, фото меньше, переписка помощников ===== */
+  .hero2 { padding-top: 22px; }
+  .who { display: flex; align-items: center; gap: 10px; }
+  .who-name { font-weight: 700; font-size: 15px; }
+  .who-kicker { font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-top: 1px; }
+  .utp { font-family: "Oswald", sans-serif; font-weight: 600; font-size: 38px; line-height: 1.02; text-transform: uppercase; margin-top: 18px; letter-spacing: .005em; }
+  .utp em { font-style: normal; color: var(--accent); white-space: nowrap; }
+  .utp-sub { font-family: "Playfair Display", Georgia, serif; font-style: italic; font-weight: 500; font-size: 21px; color: var(--gold); margin-top: 8px; line-height: 1.2; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .tags span { padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #C3D2D0; border: 1px solid var(--line); background: rgba(255, 255, 255, .03); }
+  .stage2 { position: relative; height: 320px; margin: 10px -16px 0; overflow: hidden; }
+  .stage2 .figure-wrap { right: -24px; height: 300px; }
+  .stage2 .halo { width: 260px; height: 260px; }
+  /* Чат помощников */
+  .chat {
+    position: absolute; left: 16px; bottom: 16px; z-index: 3; width: 214px; height: 252px; overflow: hidden;
+    padding: 10px; border-radius: 20px;
+    background: rgba(10, 26, 29, .72); border: 1px solid rgba(242, 246, 245, .16);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+  }
+  .chat-head { display: flex; align-items: center; gap: 8px; padding: 0 2px 8px; border-bottom: 1px solid rgba(242, 246, 245, .1); font-size: 12px; font-weight: 700; }
+  .chat-head small { display: block; font-size: 10.5px; font-weight: 500; color: var(--muted); }
+  .chat-head .faces { display: flex; }
+  .chat-head .faces img { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #0A1A1D; margin-left: -7px; object-fit: cover; }
+  .chat-head .faces img:first-child { margin-left: 0; }
+  .chat-feed { position: absolute; left: 10px; right: 10px; top: 50px; bottom: 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 7px; }
+  .cm { flex: none; }
+  .cm { display: flex; gap: 6px; align-items: flex-end; animation: cmIn .5s cubic-bezier(.2, .8, .2, 1) both; }
+  .cm img { flex: none; width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+  .cm-b { padding: 6px 9px; border-radius: 12px 12px 12px 4px; font-size: 11.5px; line-height: 1.3; background: rgba(95, 220, 203, .08); border: 1px solid rgba(95, 220, 203, .45); }
+  .cm-b small { display: block; font-size: 10px; font-weight: 700; color: var(--accent); }
+  .cm.me { justify-content: flex-end; }
+  .cm.me .cm-b { background: rgba(242, 246, 245, .92); color: #0B1A1C; border: 0; border-radius: 12px 12px 4px 12px; font-weight: 500; }
+  .typing { display: inline-flex; gap: 3px; padding: 9px 10px; }
+  .typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: .4; animation: dot 1s infinite; }
+  .typing i:nth-child(2) { animation-delay: .15s; }
+  .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes dot { 50% { opacity: 1; transform: translateY(-2px); } }
+  @keyframes cmIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  .chat-feed.out { animation: feedOut .45s ease-in forwards; }
+  @keyframes feedOut { to { opacity: 0; transform: translateY(-12px); } }
+  .hero2 .about { text-align: left; margin-top: 14px; }
+  @media (prefers-reduced-motion: reduce) { .cm, .typing i, .chat-feed.out { animation: none; } }
+
   /* Навигация по разделам */
   .nav {
     position: sticky; top: 0; z-index: 5; display: flex; gap: 8px; overflow-x: auto;
@@ -145,8 +191,48 @@
   .chip:active { background: var(--accent-soft); }
 
   section { margin-top: 26px; scroll-margin-top: 64px; }
-  h2 { font-family: "Cormorant Garamond", Georgia, serif; font-size: 28px; font-weight: 700; line-height: 1.1; margin-bottom: 12px; }
-  h2 small { display: block; font-family: "Montserrat", sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); margin-top: 4px; }
+  h2 { font-family: "Oswald", sans-serif; font-size: 26px; font-weight: 600; line-height: 1.05; text-transform: uppercase; letter-spacing: .01em; margin-bottom: 12px; }
+  h2 small { display: block; font-family: "Manrope", sans-serif; text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 500; color: var(--muted); margin-top: 4px; }
+
+  /* Интерактив «Что отдать ИИ-помощнику» */
+  .quiz { border-radius: var(--radius); padding: 18px 16px; background: var(--card); border: 1px solid var(--line); }
+  .quiz h3 { font-family: "Oswald", sans-serif; font-size: 24px; font-weight: 600; line-height: 1.05; text-transform: uppercase; }
+  .quiz-text { color: #C3D2D0; font-size: 13.5px; margin-top: 6px; }
+  /* Команда прилипает под навигацией, чтобы было видно, как она собирается */
+  .team { position: sticky; top: 60px; z-index: 2; display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; margin: 14px -16px 12px; padding: 10px 8px; background: rgba(9, 22, 25, .94); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 0 0 16px 16px; }
+  .mate { text-align: center; min-width: 0; opacity: .45; filter: grayscale(.85); transition: opacity .4s, filter .4s; }
+  .mate-ava { position: relative; width: 50px; height: 50px; margin: 0 auto; border-radius: 50%; display: grid; place-items: center; border: 1.5px dashed rgba(228, 199, 143, .4); transition: transform .4s cubic-bezier(.3, 1.6, .5, 1), border-color .4s, box-shadow .4s; }
+  .mate-ava img { width: calc(100% - 6px); height: calc(100% - 6px); border-radius: 50%; object-fit: cover; }
+  .mate-ava .ic { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; }
+  .mate-name { font-weight: 700; font-size: 12px; margin-top: 6px; }
+  .mate-role { hyphens: auto; color: var(--muted); font-size: 10px; line-height: 1.2; margin-top: 2px; }
+  .mate.on { opacity: 1; filter: none; }
+  .mate.on .mate-ava { border: 1.5px solid var(--gold); transform: scale(1.08); box-shadow: 0 0 0 4px rgba(228, 199, 143, .1), 0 0 22px rgba(228, 199, 143, .35); }
+  .mate.pop .mate-ava { animation: pop .5s ease-out; }
+  @keyframes pop { 0% { box-shadow: 0 0 0 0 rgba(228, 199, 143, .7); } 100% { box-shadow: 0 0 0 16px rgba(228, 199, 143, 0); } }
+  .tasks { display: flex; flex-wrap: wrap; gap: 8px; }
+  .task {
+    display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 12px; cursor: pointer;
+    background: rgba(255, 255, 255, .04); border: 1px solid var(--line); color: var(--text);
+    font-size: 13px; font-weight: 500; line-height: 1.3; text-align: left; transition: background .2s, border-color .2s;
+  }
+  .task i { flex: none; width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--muted); position: relative; transition: background .2s, border-color .2s; }
+  .task.on { background: var(--accent-soft); border-color: rgba(95, 220, 203, .5); }
+  .task.on i { background: var(--accent); border-color: var(--accent); }
+  .task.on i::after { content: ""; position: absolute; left: 4px; top: 0; width: 4px; height: 8px; border: solid #062A2A; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .verdict { margin-top: 16px; }
+  .verdict .hint { text-align: center; color: var(--muted); font-size: 13px; padding: 12px; border: 1px dashed var(--line); border-radius: 14px; }
+  .pick { border-radius: 14px; padding: 14px; background: var(--grad); margin-bottom: 8px; animation: rise .35s ease-out; }
+  .pick.alt { background: rgba(255, 255, 255, .05); border: 1px solid var(--line); }
+  .pick-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
+  .pick-row { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; margin-top: 4px; }
+  .pick-title { font-weight: 700; font-size: 15px; line-height: 1.3; }
+  .pick-price { flex: none; font-weight: 700; white-space: nowrap; }
+  .pick.alt .pick-price { color: var(--accent); }
+  .pick-why { font-size: 12.5px; opacity: .85; margin-top: 3px; }
+  .verdict .btn { margin-top: 6px; }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .pick, .mate.pop .mate-ava { animation: none; } }
 
   /* Бесплатный разбор */
   .gift { border-radius: var(--radius); padding: 18px; background: var(--grad); box-shadow: 0 10px 30px rgba(15, 110, 108, .25); }
@@ -243,7 +329,7 @@
   .reviews { display: flex; gap: 10px; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .reviews::-webkit-scrollbar { display: none; }
   .review { flex: none; width: 84%; scroll-snap-align: start; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; }
-  .review .quote { font-family: "Cormorant Garamond", Georgia, serif; font-size: 46px; line-height: .6; color: var(--accent); height: 22px; }
+  .review .quote { font-family: "Playfair Display", Georgia, serif; font-style: italic; color: var(--gold) !important; font-size: 46px; line-height: .6; color: var(--accent); height: 22px; }
   .review p { font-size: 14px; flex: 1; }
   .review .who { margin-top: 10px; font-weight: 700; font-size: 13px; }
   .review .who span { font-weight: 400; color: var(--muted); }
@@ -258,6 +344,13 @@
   .in-tg .sticky-cta { display: none; }
 
   /* Карточка тарифа (картинка) внутри раскрытого тарифа */
+  /* Как считаем цену */
+  .terms { margin-top: 14px; padding: 16px; border-radius: var(--radius); background: rgba(255, 255, 255, .03); border: 1px dashed var(--line); }
+  .terms-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .terms ul { list-style: none; }
+  .terms li { position: relative; padding-left: 16px; margin: 6px 0; font-size: 13.5px; color: #C3D2D0; }
+  .terms li::before { content: ""; position: absolute; left: 2px; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+  .terms p { margin-top: 10px; font-size: 12px; color: var(--muted); }
   .service-img { display: block; width: 100%; border-radius: 14px; margin-bottom: 14px; background: #0C1B1E; aspect-ratio: 1 / 1; object-fit: cover; }
 </style>
 </head>
@@ -282,127 +375,173 @@ const CONFIG = {
   // Фото без фона лежит рядом с index.html (webp + png на случай старых телефонов)
   photo: "portrait.webp",
   photoFallback: "portrait.png",
-  kicker: "Продвижение ВКонтакте",
-  roles: ["оформление сообществ", "чат-боты", "таргетированная реклама"],
+  kicker: "ИИ-помощники для бизнеса и блога",
+  roles: ["ИИ-помощники", "сайты", "приложения в Telegram"],
   // Сообщения, которые всплывают рядом с фото
   messages: [
-    { ava: "А", from: "Анна", text: "Здравствуйте! Хочу записаться 🙌" },
-    { ava: "+1", from: "из сообщества ВК", text: "Новая заявка", gold: true },
+    { ava: "ИИ", from: "Помощник", text: "Сценарий рилса готов ✍️" },
+    { ava: "+1", from: "из приложения", text: "Новая запись", gold: true },
   ],
-  headline: "Помогаю, чтобы вам писали, а не вы бегали за клиентами",
+  // УТП: три варианта на выбор, смотреть через ?utp=1, ?utp=2, ?utp=3. *слово* — мятой.
+  utp: 1,
+  utps: [
+    { h: "Команда *ИИ-помощников* ведёт ваш блог", sub: "пока вы работаете с клиентами" },
+    { h: "Посты, сценарии и монтаж *без вас*", sub: "вы только проверяете с телефона" },
+    { h: "Свой отдел контента *в Telegram*", sub: "шесть помощников, которые не выгорают" },
+  ],
+  tags: ["ИИ-помощники", "сайты", "приложения в Telegram"],
+  // Переписка в шапке: who — помощник из quiz.helpers, me — сообщение клиента
+  chat: [
+    { me: true, text: "Нужен рилс про запись на декабрь" },
+    { who: "mashka", text: "Поняла задачу. Тема и план готовы, передаю Максу" },
+    { who: "maks", text: "Сценарий рилса готов, три дубля на выбор" },
+    { who: "marusya", text: "Смонтировала, субтитры на месте" },
+    { who: "sonka", text: "Обложка готова, можно выкладывать" },
+  ],
+  headline: "Нейросети ведут ваш блог, пока вы работаете с клиентами",
   // Текст под шапкой. Слова в <b>…</b> выделяются бирюзовым
-  about: "<b>Оформлю сообщество</b> так, чтобы человек не потерялся, сразу увидел ваши услуги и нажал «Написать». Если сомневается — <b>чат-бот</b> ответит на вопросы и доведёт до заявки. А <b>таргет</b> приведёт новых людей, чтобы заявок стало больше.",
+  about: "<b>Помощник</b> в Telegram пишет посты и сценарии, монтирует рилсы, а вы только проверяете с телефона. <b>Сайт</b> или <b>приложение в Telegram</b> соберут ваши услуги, цены и запись в одном месте, и клиент напишет сам. Делаю под ключ и оформляю всё на вас.",
 
   bookingUrl: ME,
   bookingLabel: "Написать Инне",
   channelUrl: "https://t.me/gorulko_club",
-  vkUrl: "https://vk.ru/innagorulko",
+  aiChannelUrl: "https://t.me/gorulko_ai",
+  instagramUrl: "https://www.instagram.com/inna.gorulko/",
 
-  gift: {
-    title: "Разбор вашего сообщества",
-    text: "Захожу в ваше сообщество глазами клиента и показываю, что именно мешает вам получать заявки.",
-    points: [
-      "где человек теряется и почему не пишет",
-      "что поправить в визуале: обложка, меню, баннеры",
-      "чего не хватает в контенте",
-      "нужен ли вам чат-бот",
-      "стоит ли сейчас запускать рекламу",
+  // Интерактив «Что отдать ИИ-помощнику» (вместо подарка, 16.11.2026).
+  // helpers — помощники: photo пока пустое, тогда рисуется иконка. Фото кладём в папку helpers/.
+  // tasks — что человек может отметить: helper — какой помощник это берёт, product — какое приложение или сайт подойдёт.
+  // plans — сколько помощников → какой тариф (цены из прайса).
+  // group — помощники с одной группой считаются как один (Машка и Макс = контент).
+  // hard — цена, если нужен только этот помощник (монтаж самый сложный).
+  quiz: {
+    title: "Что отдать ИИ-помощнику",
+    text: "Отметьте, на что у вас уходит больше всего времени. Команда соберётся прямо здесь, а внизу будет видно, сколько помощников вам нужно.",
+    helpers: {
+      mashka: { name: "Машка", role: "идеи и план", icon: "sparkle", photo: "helpers/mashka.webp", group: "content" },
+      maks: { name: "Макс", role: "посты и сценарии", icon: "sparkle", photo: "helpers/maks.webp", group: "content" },
+      marusya: { name: "Маруся", role: "монтаж рилсов", icon: "play", photo: "helpers/marusya.webp", hard: "от 15 000 ₽" },
+      sanya: { name: "Саня", role: "конку­ренты", icon: "search", photo: "helpers/sanya.webp" },
+      dimon: { name: "Димон", role: "разбор профиля", icon: "user", photo: "helpers/dimon.webp" },
+      sonka: { name: "Сонька", role: "визуал", icon: "palette", photo: "helpers/sonka.webp" },
+    },
+    tasks: [
+      { text: "Придумывать, о чём писать", helper: "mashka" },
+      { text: "Контент-план на неделю", helper: "mashka" },
+      { text: "Писать посты", helper: "maks" },
+      { text: "Сценарии для рилсов", helper: "maks" },
+      { text: "Монтировать рилсы", helper: "marusya" },
+      { text: "Следить за конкурентами", helper: "sanya" },
+      { text: "Понять, что не так с моим профилем", helper: "dimon" },
+      { text: "Обложки и картинки к постам", helper: "sonka" },
     ],
-    button: "Хочу разбор",
-    how: "Напишите слово РАЗБОР и пришлите ссылку на сообщество",
-    url: ME,
+    plans: [
+      { min: 1, title: "Помощник под одну задачу", price: "от 10 000 ₽" },
+      { min: 2, title: "Два помощника", price: "от 15 000 ₽" },
+      { min: 3, title: "Бригада: команда под все процессы", price: "от 30 000 ₽" },
+    ],
+    products: {},
+    pairNote: "Машка и Макс работают в паре и считаются как один помощник по контенту.",
+    empty: "Отметьте хотя бы одно дело",
+    button: "Хочу такую команду",
   },
+
+  // Подарок про разбор сообщества ВК убран 16.11.2026, здесь будет интерактив про рутину и ИИ-помощников
+  gift: null,
 
   // price — на карточке; options — варианты с ценами; note — строка про стоимость;
   // fit — «Подойдёт, если…»; post — пост в канале для кнопки «Подробнее»
+  // (если поста нет, «Узнать подробнее» ведёт в личку, как и «Заказать»)
+  // Цены челленджа с 16.11.2026 (решение Инны), везде «от»: итог зависит от сложности.
   services: [
     {
-      icon: "palette",
-      title: "Визуал для сообщества ВК",
-      short: "Аккуратный и понятный визуал для вашего сообщества",
-      price: "3 000 ₽",
-      details: ["обложка для ПК", "обложка для мобильной версии", "аватар сообщества", "оформление меню (до 5 кнопок)", "оформление виджетов"],
-      fit: "у вас уже есть сообщество, но хочется сделать аккуратный и понятный визуал",
-      image: "cards/visual.jpg",
-      post: CH + "16",
-    },
-    {
-      icon: "layers",
-      title: "Полная упаковка сообщества ВК",
-      short: "Не только визуал, но и структура сообщества",
-      price: "4 500 ₽",
-      details: ["всё из пакета «Визуал для сообщества ВК»", "настройка меню", "настройка переходов", "подключение виджетов", "логика навигации по сообществу"],
-      fit: "вы хотите привести сообщество в порядок и настроить удобную навигацию для клиентов",
-      image: "cards/upakovka.jpg",
-      post: CH + "17",
-    },
-    {
-      icon: "key",
-      title: "Сообщество ВКонтакте под ключ",
-      short: "Оформление, навигация и чат-бот",
-      price: "7 000 ₽",
-      details: ["оформление сообщества (обложка, аватар, меню, виджеты)", "настройка структуры и навигации", "чат-бот для ответов клиентам"],
-      fit: "вы хотите полностью готовое сообщество с оформлением, навигацией и автоматическими ответами клиентам",
-      image: "cards/pod-klyuch.jpg",
-      post: CH + "22",
+      icon: "search",
+      title: "Разбор 2 в 1",
+      short: "Ваша страница, 3 конкурента и контент-план на 2 недели",
+      price: "2 990 ₽",
+      details: ["разбор вашей страницы", "разбор 3 конкурентов", "контент-план на 2 недели на основе разбора", "стратегия: в каком направлении двигаться дальше"],
+      fit: "вы не знаете, с чего начать и что вам нужно",
     },
     {
       icon: "bot",
-      title: "Чат-бот для сообщества ВК",
-      short: "Автоматически отвечает клиентам и помогает принимать заявки",
-      price: "от 7 000 ₽",
-      note: "Стоимость: <b>7 000 – 10 000 ₽</b>",
-      details: ["разработка логики общения", "приветственное сообщение и согласие на рассылку", "автоматические ответы на частые вопросы", "несколько сценариев общения (ветки сообщений)", "воронка сообщений с информацией о ваших услугах", "сбор заявок и догрев клиентов"],
-      fit: "вы хотите автоматизировать ответы клиентам и доводить их до заявки без постоянного ручного общения",
-      image: "cards/chat-bot.jpg",
-      post: CH + "28",
-    },
-    {
-      icon: "target",
-      title: "Таргет ВКонтакте",
-      short: "Настраиваю рекламу, которая приводит целевых клиентов",
-      price: "от 2 500 ₽",
+      title: "ИИ-помощник",
+      short: "Берёт на себя одну задачу: контент, монтаж, визуал. Работает в Telegram",
+      price: "от 10 000 ₽",
       options: [
-        { label: "5 дней", price: "2 500 ₽" },
-        { label: "10 дней", price: "4 800 ₽" },
-        { label: "1 месяц", price: "14 000 ₽" },
+        { label: "Помощник под одну задачу", price: "от 10 000 ₽" },
+        { label: "Два помощника", price: "от 15 000 ₽" },
       ],
-      details: ["настройка рекламных кампаний", "подбор аудитории", "анализ и оптимизация", "отчёт по результатам"],
-      fit: "хотите стабильно получать новых клиентов и масштабировать свой бизнес",
-      image: "cards/target.jpg",
-      post: CH + "59",
+      details: ["контент: идеи, контент-план, посты, сценарии", "монтаж рилсов, карусели", "разбор конкурентов и профиля", "визуал: обложки и картинки", "работает в Telegram, прямо с телефона"],
+      note: "Цена зависит от того, что делает помощник. Самый сложный и дорогой — монтаж: рилсы, карусели, съёмка рилсов, от 15 000 ₽",
     },
     {
-      icon: "sparkle",
-      title: "Готовый визуал для ВК",
-      short: "Светлый или тёмно-синий, с вашим фото и именем",
-      price: "2 500 ₽",
-      details: ["обложка для компьютера", "мобильная обложка", "4 кнопки меню", "аватар", "виджет"],
-      fit: "вы начинающий куратор и не хотите ломать голову над оформлением",
-      post: CH + "86",
+      icon: "layers",
+      title: "Бригада",
+      short: "Команда помощников под все процессы, как у меня",
+      price: "от 30 000 ₽",
+      details: ["контент", "монтаж", "конкуренты", "разбор профиля", "визуал"],
+      note: "Цена зависит от того, каких помощников собираем в команду",
     },
     {
-      icon: "layout",
-      title: "Макеты и дизайн",
-      short: "Карточки тарифов для бота, баннеры и другое",
-      price: "",
-      details: ["макеты тарифов для чат-бота", "баннеры и карточки услуг", "визитки, флаеры, сертификаты", "презентации", "всё в едином стиле вашего проекта"],
-      post: CH + "51",
+      icon: "phone",
+      title: "Приложение в Telegram",
+      short: "Услуги, цены, запись или обучение. Открывается прямо с телефона",
+      price: "от 5 000 ₽",
+      options: [
+        { label: "Услуги и цены", price: "от 5 000 ₽" },
+        { label: "С онлайн-записью", price: "от 10 000 ₽" },
+        { label: "Марафон или обучение", price: "от 15 000 ₽" },
+        { label: "Мини-магазин", price: "по запросу" },
+      ],
+      details: ["услуги, цены и отзывы в одном месте", "онлайн-запись: клиент сам выбирает время", "марафон или обучение: уроки, задания, оплата", "мини-магазин: каталог, заказ, оплата"],
+      note: "Цена мини-магазина зависит от числа товаров",
+    },
+    {
+      icon: "globe",
+      title: "Сайт",
+      short: "От визитки до сайта с оплатой. Находится в Яндексе",
+      price: "от 15 000 ₽",
+      options: [
+        { label: "Сайт-визитка", price: "от 15 000 ₽" },
+        { label: "С админкой и онлайн-записью", price: "от 20 000 ₽" },
+        { label: "С продажами и оплатой", price: "от 30 000 ₽" },
+        { label: "Многостраничный, другие задачи", price: "по запросу" },
+      ],
+      details: ["услуги, цены, отзывы, работы", "запись", "карточка в Яндекс Картах входит в сайт-визитку", "сайт находится в Яндексе"],
+    },
+    {
+      icon: "mic",
+      title: "Консультация",
+      short: "60–90 минут, запись остаётся у вас",
+      price: "5 000 ₽",
+      details: ["60–90 минут", "запись консультации остаётся у вас"],
+      note: "Засчитывается в оплату, если в течение 14 дней вы заказываете внедрение",
+    },
+    {
+      icon: "pin",
+      title: "Карточка в Яндекс Картах",
+      short: "Чтобы бизнес показывался на карте",
+      price: "от 3 000 ₽",
+      details: ["создаю карточку", "добавляю фото", "привязываю к сайту и приложению"],
+      note: "В сайт-визитку уже входит",
     },
   ],
 
-  cases: [
-    { name: "Марина", niche: "нумеролог", url: CH + "18" },
-    { name: "Катя", niche: "сетевой бизнес", url: CH + "29" },
-    { name: "Гумрал", niche: "куратор", url: CH + "34" },
-    { name: "Надежда", niche: "куратор", url: CH + "37" },
-    { name: "Диана", niche: "сетевой бизнес", url: CH + "42" },
-    { name: "Ирина", niche: "куратор", url: CH + "48" },
-    { name: "Асемгуль", niche: "куратор", url: CH + "49" },
-    { name: "Динара", niche: "куратор", url: CH + "55" },
-    { name: "Ирина", niche: "нутрициолог", url: CH + "79" },
-    { name: "Гульназ", niche: "куратор", url: CH + "89" },
-  ],
+  // Блок «Как считаем цену» под услугами
+  pricing: {
+    title: "Как считаем цену",
+    points: [
+      "Это цены на время челленджа, до 15 декабря 2026. Потом прайс будет пересмотрен.",
+      "Итог зависит от сложности, точную цену называю после разговора.",
+      "Первые 14 дней правки бесплатно. Абонплаты за мою работу нет.",
+      "Хостинг, домен, сервер и подписку на нейросеть оплачиваете вы, суммы называю заранее.",
+      "Всё оформляется на вас.",
+    ],
+    small: "Информация на этой странице не является публичной офертой. Цену и условия уточняйте лично.",
+  },
+
+  // Кейсы по ВК убраны 16.11.2026, позже добавим кейсы по приложениям и сайтам
+  cases: [],
 
   reviews: [
     { text: "Ты прям прочитала все мои мысли, собрала в кучу и изложила это в моём сообществе. Я бы без тебя не справилась! И сделала всё максимально быстро.", name: "Диана", about: "оформление ВК" },
@@ -411,14 +550,8 @@ const CONFIG = {
     { text: "Боже, какая ты умничка! Всё так красиво и гармонично с цветами 💋", name: "Марина", about: "сообщество с нуля" },
   ],
 
-  useful: [
-    { icon: "user", title: "Знакомство", desc: "Кто я и как работаю", url: CH + "4" },
-    { icon: "cap", title: "Моё обучение", desc: "Сертификаты", url: CH + "6" },
-    { icon: "play", title: "Визуал или упаковка — в чём разница", desc: "Видео", url: CH + "84" },
-    { icon: "mic", title: "Почему бизнесу стоит переходить в ВК", desc: "Подкаст", url: CH + "15" },
-    { icon: "mic", title: "Чат-боты: как вести клиента к покупке", desc: "Подкаст", url: CH + "27" },
-    { icon: "search", title: "Как понять, что чат-бот сливает заявки", desc: "Разбор", url: CH + "67" },
-  ],
+  // Посты про ВК убраны 16.11.2026, позже добавим полезное про нейросети
+  useful: [],
 };
 
 /* ============================ Логика ============================ */
@@ -450,38 +583,63 @@ function openUrl(url) {
 function render() {
   const c = CONFIG;
   const has = arr => Array.isArray(arr) && arr.length > 0;
+  const n = +(new URLSearchParams(location.search).get("utp") || c.utp || 1);
+  const utp = c.utps[n - 1] || c.utps[0];
 
   document.getElementById("app").innerHTML = `
-    <header class="hero">
-      <div class="stage">
+    <header class="hero2">
+      <div class="who">
+        <div><div class="who-name">${esc(c.name)}</div>${c.kicker ? `<div class="who-kicker">${esc(c.kicker)}</div>` : ""}</div>
+      </div>
+      <h1 class="utp">${esc(utp.h).replace(/\*(.+?)\*/g, "<em>$1</em>")}</h1>
+      <div class="utp-sub">${esc(utp.sub)}</div>
+      ${has(c.tags) ? `<div class="tags">${c.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
+      <div class="stage2">
         ${c.photo ? `
         <div class="figure-wrap">
           <div class="halo" aria-hidden="true"><div class="ring"></div><div class="orbit"></div></div>
           <picture class="figure"><source srcset="${esc(c.photo)}" type="image/webp"><img src="${esc(c.photoFallback || c.photo)}" alt="${esc(c.name)}"></picture>
-          <div class="ripple" aria-hidden="true"><i></i><i></i><i></i></div>
         </div>` : ""}
-        <div class="title">
-          ${c.kicker ? `<div class="kicker">${esc(c.kicker)}</div>` : ""}
-          <h1 class="name">${c.name.split(" ").map(esc).join("<br>")}</h1>
-          ${has(c.roles) ? `<ul class="roles">${c.roles.map(r => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}
-        </div>
-        ${(c.messages || []).map((m, i) => `
-          <div class="msg m${i + 1}" aria-hidden="true"><div class="msg-in">
-            <span class="ava${m.gold ? " gold" : ""}">${esc(m.ava)}</span>
-            <span><small>${esc(m.from)}</small>${esc(m.text)}</span>
-          </div></div>`).join("")}
+        ${has(c.chat) ? `
+        <div class="chat" aria-hidden="true">
+          <div class="chat-head">
+            <div class="faces">${Object.values(c.quiz.helpers).slice(0, 4).map(h => `<img src="${esc(h.photo)}" alt="">`).join("")}</div>
+            <div>Бригада<small>6 помощников онлайн</small></div>
+          </div>
+          <div class="chat-feed" id="chatFeed"></div>
+        </div>` : ""}
       </div>
-      <div class="plaque">${esc(c.headline)}</div>
       ${c.about ? `<p class="about">${c.about}</p>` : ""}
     </header>
 
     <nav class="nav">
+      ${c.quiz ? `<a class="chip" data-go="quiz">Помощники</a>` : ""}
       ${c.gift ? `<a class="chip" data-go="gift">Бесплатно</a>` : ""}
-      <a class="chip" data-go="services">Тарифы</a>
+      <a class="chip" data-go="services">Услуги</a>
       ${has(c.cases) ? `<a class="chip" data-go="cases">Кейсы</a>` : ""}
       ${has(c.reviews) ? `<a class="chip" data-go="reviews">Отзывы</a>` : ""}
       ${has(c.useful) ? `<a class="chip" data-go="useful">Полезное</a>` : ""}
     </nav>
+
+    ${c.quiz ? `
+    <section id="quiz">
+      <div class="quiz">
+        <h3>${esc(c.quiz.title)}</h3>
+        <p class="quiz-text">${esc(c.quiz.text)}</p>
+        <div class="team">
+          ${Object.entries(c.quiz.helpers).map(([id, h]) => `
+            <div class="mate" data-mate="${id}">
+              <div class="mate-ava">${h.photo ? `<img src="${esc(h.photo)}" alt="${esc(h.name)}">` : `<span class="ic">${icon(h.icon)}</span>`}</div>
+              <div class="mate-name">${esc(h.name)}</div>
+              <div class="mate-role">${esc(h.role)}</div>
+            </div>`).join("")}
+        </div>
+        <div class="tasks">
+          ${c.quiz.tasks.map((t, i) => `<button class="task" data-task="${i}"><i></i>${esc(t.text)}</button>`).join("")}
+        </div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+    </section>` : ""}
 
     ${c.gift ? `
     <section id="gift">
@@ -496,7 +654,7 @@ function render() {
     </section>` : ""}
 
     <section id="services">
-      <h2>Тарифы<small>Нажмите на тариф, чтобы посмотреть, что входит</small></h2>
+      <h2>Услуги и цены<small>Нажмите на услугу, чтобы посмотреть, что входит</small></h2>
       ${c.services.map((s, i) => `
         <div class="service" data-service="${i}">
           <div class="service-top">
@@ -515,11 +673,17 @@ function render() {
             <ul>${(s.details || []).map(d => `<li>${esc(d)}</li>`).join("")}</ul>
             ${s.fit ? `<div class="fit">Подойдёт, если ${esc(s.fit)}</div>` : ""}
             <div class="row">
-              ${s.post && !s.image ? `<button class="btn ghost" data-url="${esc(s.post)}">Подробнее</button>` : ""}
+              <button class="btn ghost" data-url="${esc(s.post || c.bookingUrl)}">Узнать подробнее</button>
               <button class="btn" data-url="${esc(c.bookingUrl)}">${s.price ? "Заказать" : "Узнать цену"}</button>
             </div>
           </div>
         </div>`).join("")}
+      ${c.pricing ? `
+      <div class="terms">
+        <div class="terms-title">${esc(c.pricing.title)}</div>
+        <ul>${c.pricing.points.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+        <p>${esc(c.pricing.small)}</p>
+      </div>` : ""}
     </section>
 
     ${has(c.cases) ? `
@@ -580,7 +744,7 @@ function render() {
 
     <footer>
       <p>Спрашивайте что угодно — отвечаю сама</p>
-      <p><a data-url="${esc(c.channelUrl)}">Канал</a> · <a data-url="${esc(c.vkUrl)}">Сообщество ВК</a></p>
+      <p><a data-url="${esc(c.channelUrl)}">Кейсы и услуги</a> · <a data-url="${esc(c.aiChannelUrl)}">Канал про нейросети</a> · <a data-url="${esc(c.instagramUrl)}">Инстаграм</a></p>
     </footer>
 
     <div class="sticky-cta"><button class="btn" data-url="${esc(c.bookingUrl)}">${esc(c.bookingLabel)}</button></div>
@@ -600,6 +764,11 @@ const ICONS = {
   cap: '<path d="M2 9.5 12 4.5l10 5-10 5z"/><path d="M6 11.5v4.5c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.5"/><path d="M22 9.5v5.5"/>',
   play: '<rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10 9.3v5.4l4.6-2.7z"/>',
   mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21M9 21h6"/>',
+  phone: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.3"/>',
+  bag: '<path d="M5 8h14l-1 12.5H6z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/>',
+  pin: '<path d="M12 21s-6.5-6.2-6.5-11.5a6.5 6.5 0 0 1 13 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/>',
   search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/><path d="M8 10.5h5M10.5 8v5"/>',
 };
 function icon(name) {
@@ -638,6 +807,68 @@ function drawSnake() {
   }
 }
 
+// Интерактив: отмеченные дела → помощники загораются, внизу тариф и кнопка в личку
+const picked = new Set();
+function updateQuiz(changedHelper) {
+  const q = CONFIG.quiz, box = document.getElementById("verdict");
+  if (!q || !box) return;
+  const tasks = [...picked].sort((a, b) => a - b).map(i => q.tasks[i]);
+  const helpers = [...new Set(tasks.map(t => t.helper).filter(Boolean))];
+  const products = [...new Set(tasks.map(t => t.product).filter(Boolean))];
+  document.querySelectorAll("[data-mate]").forEach(m => {
+    const on = helpers.includes(m.dataset.mate);
+    m.classList.toggle("on", on);
+    if (on && m.dataset.mate === changedHelper) { m.classList.remove("pop"); void m.offsetWidth; m.classList.add("pop"); }
+  });
+  if (!tasks.length) { box.innerHTML = `<div class="hint">${esc(q.empty)}</div>`; return; }
+  // Помощники одной группы (Машка и Макс) считаются как один
+  const units = [...new Set(helpers.map(h => q.helpers[h].group || h))];
+  let plan = units.length ? { ...q.plans.filter(p => units.length >= p.min).pop() } : null;
+  if (plan && units.length === 1 && q.helpers[units[0]] && q.helpers[units[0]].hard) plan.price = q.helpers[units[0]].hard;
+  const names = helpers.map(h => `${q.helpers[h].name} (${q.helpers[h].role})`);
+  const pair = helpers.filter(h => q.helpers[h].group).length > 1;
+  const card = (alt, label, title, price, why) =>
+    `<div class="pick${alt ? " alt" : ""}"><div class="pick-label">${label}</div><div class="pick-row"><div class="pick-title">${esc(title)}</div><div class="pick-price">${esc(price)}</div></div><div class="pick-why">${esc(why)}</div></div>`;
+  let html = plan ? card(false, "Вам подойдёт", plan.title, plan.price, (helpers.length > 1 ? "Возьмут на себя: " : "Возьмёт на себя: ") + names.join(", ") + (pair ? ". " + q.pairNote : "")) : "";
+  products.forEach((id, n) => {
+    const pr = q.products[id], alt = !!plan || n > 0;
+    html += card(alt, alt ? "А ещё" : "Вам подойдёт", pr.title, pr.price, pr.why[0].toUpperCase() + pr.why.slice(1));
+  });
+  const offer = [plan && `${plan.title} (${plan.price})`, ...products.map(id => `${q.products[id].title} (${q.products[id].price})`)].filter(Boolean);
+  const text = `Здравствуйте! Хочу отдать помощникам: ${tasks.map(t => t.text.toLowerCase()).join(", ")}. Мне подошло: ${offer.join("; ")}.`;
+  html += `<button class="btn" data-url="${esc(CONFIG.bookingUrl + "?text=" + encodeURIComponent(text))}">${esc(q.button)}</button>`;
+  box.innerHTML = html;
+}
+
+// Переписка помощников в шапке: сообщения по одному, перед ответом «печатает», потом пауза и повтор
+function runChat() {
+  const feed = document.getElementById("chatFeed");
+  if (!feed) return;
+  const items = CONFIG.chat, H = CONFIG.quiz.helpers;
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const bubble = m => m.me
+    ? `<div class="cm me"><div class="cm-b">${esc(m.text)}</div></div>`
+    : `<div class="cm"><img src="${esc(H[m.who].photo)}" alt=""><div class="cm-b"><small>${esc(H[m.who].name)}</small>${esc(m.text)}</div></div>`;
+  if (still) { feed.innerHTML = items.slice(-3).map(bubble).join(""); return; }
+  const trim = () => { while (feed.children.length > 4) feed.firstElementChild.remove(); };
+  let i = 0;
+  const step = () => {
+    if (i >= items.length) {
+      setTimeout(() => { feed.classList.add("out"); setTimeout(() => { feed.classList.remove("out"); feed.innerHTML = ""; i = 0; step(); }, 450); }, 2600);
+      return;
+    }
+    const m = items[i++];
+    if (m.me) { feed.insertAdjacentHTML("beforeend", bubble(m)); trim(); setTimeout(step, 1000); return; }
+    feed.insertAdjacentHTML("beforeend", `<div class="cm typing-row"><img src="${esc(H[m.who].photo)}" alt=""><div class="cm-b typing"><i></i><i></i><i></i></div></div>`);
+    trim();
+    setTimeout(() => {
+      feed.lastElementChild.outerHTML = bubble(m);
+      setTimeout(step, 1300);
+    }, 800);
+  };
+  setTimeout(step, 600);
+}
+
 function bindEvents() {
   document.addEventListener("click", e => {
     const link = e.target.closest("[data-url]");
@@ -645,6 +876,16 @@ function bindEvents() {
 
     const go = e.target.closest("[data-go]");
     if (go) { haptic(); document.getElementById(go.dataset.go).scrollIntoView({ behavior: "smooth" }); return; }
+
+    const task = e.target.closest("[data-task]");
+    if (task) {
+      haptic();
+      const i = +task.dataset.task, on = !picked.has(i);
+      on ? picked.add(i) : picked.delete(i);
+      task.classList.toggle("on", on);
+      updateQuiz(on ? CONFIG.quiz.tasks[i].helper : null);
+      return;
+    }
 
     const card = e.target.closest("[data-service]");
     if (card) { haptic(); card.classList.toggle("open"); }
@@ -672,6 +913,8 @@ function initTelegram() {
 }
 
 render();
+runChat();
+updateQuiz();
 bindEvents();
 initTelegram();
 drawSnake();
